@@ -12,7 +12,10 @@ main = hspec $ do
             in (account & (deposit 100) 
                     & (deposit 50) 
                     & (withdraw 25) 
-                    & statement) `shouldBe` "deposit 100, deposit 50, withdraw 25" 
+                    & statement) `shouldBe` "Credit | Debit | Balance\n" ++
+                                            " | 25 | 125\n" ++
+                                            "50 |  | 150\n" ++
+                                            "100 |  | 100"
         
     it "should do one deposit" $ do
         deposit 100 EmptyAccount `shouldBe` Account [Deposit 100]
@@ -27,5 +30,8 @@ main = hspec $ do
     it "should print statement of empty account" $ do
         statement EmptyAccount `shouldBe` "Account Empty !"
     it "should print statement of account" $ do
-        (statement (Account [Deposit 100, Deposit 50, Withdraw 50]))`shouldBe` "deposit 100, deposit 50, withdraw 50"
+        (statement (Account [Deposit 100, Deposit 50, Withdraw 50]))`shouldBe` "Credit | Debit | Balance\n" ++ 
+                                                                               " | 50 | 100\n" ++
+                                                                               "50 |  | 150\n" ++
+                                                                               "100 |  | 100"
     
